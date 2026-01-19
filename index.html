@@ -2,58 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Memory Test</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-
-  <link rel="icon" href="favicon.png">
-
   <style>
-    body {
+    html, body {
       margin: 0;
-      background-color: #faebd2; /* same as your BG_COLOR */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      padding: 0;
+      background: #faebd2;
       overflow: hidden;
+      height: 100%;
     }
 
-    #overlay {
-      position: absolute;
-      z-index: 10;
-      font-family: sans-serif;
+    canvas {
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* TAP TO START SCREEN */
+    #tap-screen {
+      position: fixed;
+      inset: 0;
+      background: #faebd2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       color: #5a4628;
       text-align: center;
     }
 
-    canvas {
-      width: 100vw !important;
-      height: 100vh !important;
+    #tap-screen h1 {
+      font-size: 2.6rem;
+      margin-bottom: 0.6rem;
+    }
+
+    #tap-screen p {
+      font-size: 1.2rem;
+      opacity: 0.85;
+    }
+
+    #tap-screen.hide {
+      display: none;
     }
   </style>
-
-  <script type="module"
-    src="https://pygame-web.github.io/archives/0.9/pythons.js"
-    id="site"
-    data-python="python3.12"
-    data-os="vtx,fs,snd,gui"
-    data-LINES="0"
-    data-CONSOLE="0"
-    data-autorun="1"
-    data-ume_block="0"
-    async>
-  </script>
 </head>
 
 <body>
-  <div id="overlay">
-    <h2>Loading Memory Test…</h2>
-    <p>Tap once if prompted</p>
+  <!-- TAP SCREEN -->
+  <div id="tap-screen">
+    <h1>Memory Test</h1>
+    <p>Tap anywhere to begin</p>
   </div>
 
+  <!-- GAME CANVAS -->
   <canvas id="canvas"></canvas>
+
+  <script>
+    const tapScreen = document.getElementById("tap-screen");
+
+    function unlockGame() {
+      tapScreen.classList.add("hide");
+      document.removeEventListener("touchstart", unlockGame);
+      document.removeEventListener("click", unlockGame);
+    }
+
+    document.addEventListener("touchstart", unlockGame, { once: true });
+    document.addEventListener("click", unlockGame, { once: true });
+  </script>
+
+  <!-- PYGBAG SCRIPT (DO NOT TOUCH) -->
+  <script src="pygbag.js"></script>
 </body>
 </html>
